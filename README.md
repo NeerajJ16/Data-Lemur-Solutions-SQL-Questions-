@@ -105,3 +105,20 @@ FROM reviews
 GROUP BY product, mth
 ORDER BY mth ASC
 ```
+
+#### Question : [Well Paid Employees](https://datalemur.com/questions/sql-well-paid-employees)
+```sql
+WITH companydetails AS (SELECT
+  emp.employee_id as employee_id,
+  emp.name as employee_name,
+  emp.salary as employee_salary,
+  mgr.employee_id as manager_id,
+  mgr.name as manager_name,
+  mgr.salary as manager_salary
+FROM employee as emp
+INNER JOIN employee as mgr
+  ON mgr.employee_id = emp.manager_id)
+  
+SELECT employee_id, employee_name from companydetails 
+WHERE employee_salary>manager_salary
+```
