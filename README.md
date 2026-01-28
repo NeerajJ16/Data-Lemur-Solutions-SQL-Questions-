@@ -16,7 +16,7 @@ FROM tweets2022
 GROUP BY tweet_bucket
 ```
 
-#### Question : [Write a query to list the candidates who possess all of the required skills for the job. Sort the output by candidate ID in ascending order.]([https://datalemur.com/questions/sql-histogram-tweets](https://datalemur.com/questions/matching-skills)
+#### Question : [Write a query to list the candidates who possess all of the required skills for the job. Sort the output by candidate ID in ascending order.](https://datalemur.com/questions/matching-skills)
 ```sql
 SELECT candidate_id
 FROM candidates
