@@ -94,3 +94,14 @@ GROUP BY u.city
 ORDER by total_orders DESC
 LIMIT 3
 ```
+
+#### Question : [Average Review Ratings](https://datalemur.com/questions/sql-avg-review-ratings)
+```sql
+SELECT 
+  EXTRACT(MONTH FROM submit_date) as mth, 
+  product_id as product,
+  ROUND(AVG(stars),2) as avg_stars
+FROM reviews
+GROUP BY product, mth
+ORDER BY mth ASC
+```
