@@ -1,6 +1,7 @@
 # Data-Lemur-Solutions-SQL-Questions-
 
-Question are the link to questions directly and then there are solutions too solved (using my approach)
+The questions are linked directly, and the solutions are also provided, solved using my approach.
+Some problems are in MySQL, and some are in PostgreSQL 14, since a few problems only have a PostgreSQL compiler available in the code editor.
 
 #### Question : [Histogram of Tweets](https://datalemur.com/questions/sql-histogram-tweets)
 ```sql
@@ -121,4 +122,18 @@ INNER JOIN employee as mgr
   
 SELECT employee_id, employee_name from companydetails 
 WHERE employee_salary>manager_salary
+```
+
+#### Question : [App Click through Rate](https://datalemur.com/questions/click-through-rate)
+```sql
+WITH CTR_RATE as (SELECT
+  app_id,
+  COUNT(CASE WHEN event_type = 'impression' THEN 1 END) AS impressions,
+  COUNT(CASE WHEN event_type = 'click' THEN 1 END) AS clicks
+FROM events
+WHERE timestamp >= '2022-01-01' 
+  AND timestamp < '2023-01-01'
+GROUP BY app_id)
+
+select app_id, ROUND((100.0* clicks/NULLIF(impressions,0)),2) from CTR_RATE
 ```
