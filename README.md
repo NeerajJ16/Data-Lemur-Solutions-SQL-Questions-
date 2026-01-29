@@ -148,5 +148,20 @@ FROM transactions
 GROUP BY account_id)
 
 select account_id, (deposit_amount-withdrawal_amount) as final_balance from banktransaction
-  
+```
+
+#### Question : [Second Data Confirmation](https://datalemur.com/questions/second-day-confirmation)
+```sql
+WITH tiktokDates as (SELECT
+  e.email_id,
+  e.user_id,
+  e.signup_date,
+  t.action_date
+FROM emails e
+INNER JOIN texts t
+ON e.email_id = t.email_id
+WHERE t.signup_action = 'Confirmed')
+
+SELECT user_id from tiktokDates
+WHERE DATEDIFF(action_date, signup_date) = 1
 ```
