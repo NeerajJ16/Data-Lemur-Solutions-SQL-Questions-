@@ -199,7 +199,7 @@ order by difference DESC;
 ```
 
 #### Question : [Compressed Mean](https://datalemur.com/questions/alibaba-compressed-mean)
-```PostgreSQL
+```sql
 WITH itemCalculations AS (SELECT 
 SUM(item_count * order_occurrences) as total,
 SUM(order_occurrences) as orderTotal
@@ -214,7 +214,7 @@ FROM itemCalculations;
 ```
 
 #### Question : [Pharmacy Analytics (Part 1)](https://datalemur.com/questions/top-profitable-drugs)
-```PostgreSQL
+```sql
 SELECT 
 drug,
 total_sales - cogs as total_sales
@@ -224,7 +224,7 @@ LIMIT 3
 ```
 
 #### Question : [Pharmacy Analytics (Part 2)](https://datalemur.com/questions/non-profitable-drugs)
-```PostgreSQL
+```sql
 SELECT
   manufacturer,
   COUNT(*) AS drug_count,
@@ -236,7 +236,7 @@ ORDER BY total_loss DESC;
 ```
 
 #### Question : [Pharmacy Analytics (Part 3)](https://datalemur.com/questions/total-drugs-sales)
-```PostgreSQL
+```sql
 SELECT
 manufacturer,
 CONCAT('$',ROUND(sum(total_sales)/1000000), ' million') as sales
