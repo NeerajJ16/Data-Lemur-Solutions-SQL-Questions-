@@ -137,3 +137,16 @@ GROUP BY app_id)
 
 select app_id, ROUND((100.0* clicks/NULLIF(impressions,0)),2) from CTR_RATE
 ```
+
+#### Question : [Final Account Balance](https://datalemur.com/questions/final-account-balance)
+```sql
+with banktransaction as (select 
+  account_id,
+  SUM(CASE WHEN transaction_type = 'Deposit' THEN amount END) as deposit_amount,
+  SUM(CASE WHEN transaction_type = 'Withdrawal' THEN amount END) as Withdrawal_amount
+FROM transactions
+GROUP BY account_id)
+
+select account_id, (deposit_amount-withdrawal_amount) as final_balance from banktransaction
+  
+```
