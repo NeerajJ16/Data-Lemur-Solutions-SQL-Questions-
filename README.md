@@ -187,3 +187,60 @@ FROM employee_queries
 GROUP BY unique_queries
 ORDER BY unique_queries;
 ```
+
+#### Question : [Cards Issued Difference](https://datalemur.com/questions/cards-issued-difference)
+```sql
+select 
+  card_name,
+  max(issued_amount) - min(issued_amount) as difference
+from monthly_cards_issued 
+group by card_name
+order by difference DESC;
+```
+
+#### Question : [Compressed Mean](https://datalemur.com/questions/alibaba-compressed-mean)
+```PostgreSQL
+WITH itemCalculations AS (SELECT 
+SUM(item_count * order_occurrences) as total,
+SUM(order_occurrences) as orderTotal
+FROM items_per_order)
+
+SELECT 
+  ROUND(
+    total::numeric / NULLIF(ordertotal, 0),
+    1
+  ) AS mean
+FROM itemCalculations;
+```
+
+#### Question : [Pharmacy Analytics (Part 1)](https://datalemur.com/questions/top-profitable-drugs)
+```PostgreSQL
+SELECT 
+drug,
+total_sales - cogs as total_sales
+FROM pharmacy_sales
+ORDER BY total_sales DESC
+LIMIT 3
+```
+
+#### Question : [Pharmacy Analytics (Part 2)](https://datalemur.com/questions/non-profitable-drugs)
+```PostgreSQL
+SELECT
+  manufacturer,
+  COUNT(*) AS drug_count,
+  ABS(SUM(total_sales - cogs)) AS total_loss
+FROM pharmacy_sales
+WHERE total_sales - cogs < 0
+GROUP BY manufacturer
+ORDER BY total_loss DESC;
+```
+
+#### Question : [Pharmacy Analytics (Part 3)](https://datalemur.com/questions/total-drugs-sales)
+```PostgreSQL
+SELECT
+manufacturer,
+CONCAT('$',ROUND(sum(total_sales)/1000000), ' million') as sales
+from pharmacy_sales
+GROUP BY manufacturer
+ORDER BY sum(total_sales) DESC, manufacturer
+```
