@@ -360,3 +360,31 @@ INNER JOIN department d
 WHERE dr.rankings <=3
 ORDER BY d.department_name,dr.rankings, dr.name
 ```
+
+#### Question : [Spotify Streaming History](https://datalemur.com/questions/spotify-streaming-history)
+```sql
+WITH spotifyhistory AS (
+  SELECT 
+    user_id, 
+    song_id, 
+    song_plays
+  FROM songs_history
+
+  UNION ALL
+
+  SELECT 
+    user_id, 
+    song_id, 
+    COUNT(*) AS song_plays
+  FROM songs_weekly
+  WHERE listen_time <= '2022-08-04 23:59:59'
+  GROUP BY user_id, song_id
+)
+SELECT 
+  user_id, 
+  song_id, 
+  SUM(song_plays) AS song_plays
+FROM spotifyhistory
+GROUP BY user_id, song_id
+ORDER BY song_plays DESC;
+```
