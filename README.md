@@ -286,3 +286,21 @@ WHERE salary < (
 );
 ```
 
+#### Question : [Sending vs. Opening Snaps](https://datalemur.com/questions/time-spent-snaps)
+```sql
+WITH calculations as (SELECT 
+  user_id,
+  SUM(CASE WHEN activity_type = 'open' THEN time_spent END) as open_time,
+  SUM(CASE WHEN activity_type = 'send' THEN time_spent END) as send_time
+FROM activities
+GROUP BY user_id)
+
+SELECT  
+  a.age_bucket,
+  ROUND((c.send_time / (c.send_time + c.open_time)*100.0),2) AS send_perc,
+  ROUND((c.open_time / (c.send_time + c.open_time)*100.0),2) AS open_perc
+FROM age_breakdown a
+INNER JOIN calculations c
+  ON a.user_id = c.user_id
+```
+
