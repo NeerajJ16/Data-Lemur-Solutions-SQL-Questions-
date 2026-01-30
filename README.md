@@ -304,3 +304,59 @@ INNER JOIN calculations c
   ON a.user_id = c.user_id
 ```
 
+#### Question : [Tweet's Rolling Average](https://datalemur.com/questions/rolling-average-tweets)
+```sql
+SELECT
+ user_id,
+ tweet_date,
+ ROUND (AVG(tweet_count) OVER(
+ PARTITION BY user_id
+ ORDER BY tweet_date
+ ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+ ), 2) as rolling_avg_3d
+from tweets
+```
+
+#### Question : [Highest Grossing Items](https://datalemur.com/questions/sql-highest-grossing)
+```sql
+WITH rankingCategory AS (SELECT 
+  category,
+  product, 
+  sum(spend) as total_spend,
+  ROW_NUMBER() OVER(
+  PARTITION BY category ORDER BY sum(spend) desc) AS ranking
+FROM product_spend
+WHERE YEAR(transaction_date) = 2022
+GROUP BY  category, product)
+
+SELECT 
+  category,
+  product,
+  total_spend
+from rankingCategory
+WHERE ranking <=2
+ORDER BY category, ranking;
+```
+
+#### Question : [Top Three Salaries](https://datalemur.com/questions/sql-top-three-salaries)
+```sql
+WITH department_ranking as (SELECT 
+ department_id,
+ name,
+ salary,
+ DENSE_RANK() OVER(
+ PARTITION BY department_id
+ ORDER BY salary DESC
+ ) as rankings
+FROM employee)
+
+SELECT
+  d.department_name,
+  dr.name,
+  dr.salary
+from department_ranking dr
+INNER JOIN department d
+ ON dr.department_id = d.department_id
+WHERE dr.rankings <=3
+ORDER BY d.department_name,dr.rankings, dr.name
+```
