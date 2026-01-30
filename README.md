@@ -259,6 +259,8 @@ HAVING count(*)>=3)
 SELECT count(user_count) AS policy_holder_count from policy
 ```
 
+## Level:Medium
+
 #### Question : [User's Third Transaction](https://datalemur.com/questions/sql-third-transaction)
 ```sql
 WITH transactionscount AS (SELECT 
@@ -283,6 +285,4 @@ WHERE salary < (
     FROM employee
 );
 ```
-
-## Level:Medium
 
