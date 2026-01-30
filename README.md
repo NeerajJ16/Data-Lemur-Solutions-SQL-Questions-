@@ -3,6 +3,8 @@
 The questions are linked directly, and the solutions are also provided, solved using my approach.
 Some problems are in MySQL, and some are in PostgreSQL 14, since a few problems only have a PostgreSQL compiler available in the code editor.
 
+## Level:Easy
+
 #### Question : [Histogram of Tweets](https://datalemur.com/questions/sql-histogram-tweets)
 ```sql
 WITH tweets2022 AS(
@@ -17,7 +19,7 @@ FROM tweets2022
 GROUP BY tweet_bucket
 ```
 
-#### Question : [Write a query to list the candidates who possess all of the required skills for the job. Sort the output by candidate ID in ascending order.](https://datalemur.com/questions/matching-skills)
+#### Question : [Data Science Skills](https://datalemur.com/questions/matching-skills)
 ```sql
 SELECT candidate_id
 FROM candidates
@@ -256,3 +258,31 @@ HAVING count(*)>=3)
 
 SELECT count(user_count) AS policy_holder_count from policy
 ```
+
+#### Question : [User's Third Transaction](https://datalemur.com/questions/sql-third-transaction)
+```sql
+WITH transactionscount AS (SELECT 
+  user_id, 
+  spend, 
+  transaction_date, 
+  ROW_NUMBER() OVER (
+    PARTITION BY user_id ORDER BY transaction_date) AS row_num
+FROM transactions)
+
+SELECT user_id, 
+  spend, 
+  transaction_date FROM transactionscount WHERE row_num = 3
+```
+
+#### Question : [Second Highest Salary](https://datalemur.com/questions/sql-second-highest-salary)
+```sql
+SELECT MAX(salary) AS second_highest_salary
+FROM employee
+WHERE salary < (
+    SELECT MAX(salary)
+    FROM employee
+);
+```
+
+## Level:Medium
+
