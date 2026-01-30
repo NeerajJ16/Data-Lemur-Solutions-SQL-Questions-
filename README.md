@@ -244,3 +244,15 @@ from pharmacy_sales
 GROUP BY manufacturer
 ORDER BY sum(total_sales) DESC, manufacturer
 ```
+
+#### Question : [Patient Support Analysis (Part 1)](https://datalemur.com/questions/frequent-callers)
+```sql
+WITH policy as (SELECT 
+count(policy_holder_id) as user_count,
+count(*) as call_count
+FROM callers
+GROUP BY policy_holder_id
+HAVING count(*)>=3)
+
+SELECT count(user_count) AS policy_holder_count from policy
+```
