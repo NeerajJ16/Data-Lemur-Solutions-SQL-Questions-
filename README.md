@@ -388,3 +388,58 @@ FROM spotifyhistory
 GROUP BY user_id, song_id
 ORDER BY song_plays DESC;
 ```
+
+#### Question : [Signup Activation Rate](https://datalemur.com/questions/signup-confirmation-rate)
+```sql
+with tiktok_cte as (SELECT
+  e.email_id,
+   MAX(
+      CASE 
+        WHEN t.signup_action = 'Confirmed' THEN 1 
+        ELSE 0 
+      END
+    ) AS is_confirmed
+FROM emails e
+LEFT JOIN texts t
+  ON e.email_id = t.email_id
+GROUP BY e.email_id)
+
+SELECT ROUND(sum(is_confirmed)::NUMERIC / count(*), 2)
+from tiktok_cte
+```
+
+#### Question : [FAANG Stock Min-Max (Part 1)](https://datalemur.com/questions/sql-bloomberg-stock-min-max-1)
+```sql
+WITH low_cte AS (
+  SELECT ticker,
+  TO_CHAR(date, 'Mon-YYYY') AS lowest_mth,
+  open,
+  ROW_NUMBER() OVER (
+    PARTITION BY ticker
+    ORDER BY open ASC
+  ) as low_rank
+FROM stock_prices
+),
+high_cte AS (
+  SELECT ticker,
+  TO_CHAR(date, 'Mon-YYYY') AS higest_mth,
+  open,
+  ROW_NUMBER() OVER (
+    PARTITION BY ticker
+    ORDER BY open DESC
+  ) as high_rank
+FROM stock_prices
+)
+
+SELECT 
+  h.ticker,
+  h.higest_mth,
+  h.open,
+  l.lowest_mth,
+  l.open
+FROM high_cte h
+INNER JOIN low_cte l
+ON h.ticker = l.ticker
+AND h.high_rank = 1
+AND l.low_rank = 1
+```
