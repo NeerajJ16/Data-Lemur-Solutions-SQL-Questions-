@@ -443,3 +443,14 @@ ON h.ticker = l.ticker
 AND h.high_rank = 1
 AND l.low_rank = 1
 ```
+
+#### Question : [User Shopping Sprees](https://datalemur.com/questions/amazon-shopping-spree)
+```sql
+SELECT DISTINCT T1.user_id
+FROM transactions AS T1
+INNER JOIN transactions AS T2
+  ON DATE(T2.transaction_date) = DATE(T1.transaction_date) + 1
+INNER JOIN transactions AS T3
+  ON DATE(T3.transaction_date) = DATE(T1.transaction_date) + 2
+ORDER BY user_id
+```
